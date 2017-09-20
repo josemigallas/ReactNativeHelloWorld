@@ -1,13 +1,14 @@
 /**
 * React-Native Android Jenkinsfile
 */
-node("ios") {
+node("android") {
 
   stage("Checkout") {
     checkout scm
   }
 
   stage ("Prepare") {
+    sh 'nvm use 6'
     sh 'npm install'
     if (!fileExists('android/app/src/main/assets')) {
       sh 'mkdir android/app/src/main/assets'
