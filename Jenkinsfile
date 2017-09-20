@@ -1,7 +1,7 @@
 /**
 * React-Native Android Jenkinsfile
 */
-node("android") {
+node("ios") {
 
   stage("Checkout") {
     checkout scm
