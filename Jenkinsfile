@@ -6,9 +6,17 @@ node("android") {
   stage("Checkout") {
     checkout scm
   }
+  
+  dir ("android/app/src/main/assets") {
+    sh 'react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res'
+  }
 
   stage ("Prepare") {
     sh 'npm install'
+    if (!fileExists('android/app/src/main/assets')) {
+      sh 'mkdir android/app/src/main/assets'
+    }
+    sh 'react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res'
   }
 
   stage("Build") {
