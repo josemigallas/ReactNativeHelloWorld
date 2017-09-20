@@ -12,11 +12,11 @@ node("android") {
   }
 
   stage("Build") {
-    sh 'chmod +x ./gradlew'
+    sh 'chmod +x ./android/gradlew'
     if (params.BUILD_CONFIG == 'release') {
-      sh './gradlew clean assembleRelease'
+      sh './android/gradlew clean assembleRelease'
     } else {
-      sh './gradlew clean assembleDebug'
+      sh './android/gradlew clean assembleDebug'
     }
   }
 
