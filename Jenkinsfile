@@ -8,7 +8,6 @@ node("android") {
   }
 
   stage ("Prepare") {
-    sh 'node --version && nvm current'
     sh 'npm install'
     if (!fileExists('android/app/src/main/assets')) {
       sh 'mkdir android/app/src/main/assets'
