@@ -8,9 +8,7 @@ node("android") {
   }
 
   stage ("Prepare") {
-    sh 'curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.0/install.sh | bash && nvm install 6 && nvm use 6'
-    sh 'node --version'
-    // Hola automated jenkins
+    sh 'node --version && nvm current'
     sh 'npm install'
     if (!fileExists('android/app/src/main/assets')) {
       sh 'mkdir android/app/src/main/assets'
