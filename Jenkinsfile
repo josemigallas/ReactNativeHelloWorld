@@ -4,19 +4,7 @@
 
 import groovy.json.JsonSlurper
 
-// Params
 def buildConfig = params.BUILD_CONFIG.toLowerCase()
-def codeSighProfileId = params.BUILD_CREDENTIAL_ID
-
-// Constanst
-def packageJson = new JsonSlurper().parse(readFile(file: 'package.json'))
-def projectName = packageJson.name
-
-def infoPlist = "${projectName}/Info.plist"
-def outputFileName = "${projectName}-${buildConfig}.ipa".replace(" ", "").toLowerCase()
-def sdk = "iphoneos"
-
-println("projectName: ${projectName}, info.plist: ${infoPlist}, outputFileName: ${outputFileName}")
 
 node("android") {
 
@@ -52,12 +40,23 @@ node("android") {
 
 node("ios") {
 
+  def infoPlist
+  def outputFileName
+  def projectName
+  def sdk = "iphoneos"
+
   stage("Checkout") {
     checkout scm
   }
 
   stage("Prepare") {
     sh "npm install --production"
+    def packageJson = new JsonSlurper().parse(readFile(file: '/package.json'))
+    projectName = packageJson.name
+    infoPlist = "${projectName}/Info.plist"
+    outputFileName = "${projectName}-${buildConfig}.ipa".replace(" ", "").toLowerCase()
+
+    println("projectName: ${projectName}, info.plist: ${infoPlist}, outputFileName: ${outputFileName}")
   }
 
   stage("Build") {
