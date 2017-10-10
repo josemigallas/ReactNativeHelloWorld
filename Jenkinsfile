@@ -57,6 +57,8 @@ node("ios") {
     // projectName = matcher[0][1]
     projectName = "ReactNativeHelloWorld"
     sh "ls -al"
+    sh "ls ios -al"
+    sh "ls ios/${projectName} -al"
     infoPlist = "ios/${projectName}/Info.plist"
     outputFileName = "${projectName}-${buildConfig}.ipa".replace(" ", "").toLowerCase()
     
