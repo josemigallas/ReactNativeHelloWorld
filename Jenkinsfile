@@ -1,51 +1,74 @@
 /**
 * React-Native Android Jenkinsfile
 */
-node("android") {
+
+import groovy.json.JsonSlurper
+
+def buildConfig = params.BUILD_CONFIG.toLowerCase()
+
+// node("android") {
+
+//   stage("Checkout") {
+//     checkout scm
+//   }
+
+//   stage ("Prepare") {
+//     sh 'npm install --production'
+//   }
+
+//   stage("Build") {
+//     sh 'chmod +x ./android/gradlew'
+//     sh "cd android && ./gradlew clean assemble${buildConfig}"
+//   }
+
+//   stage("Sign") {
+//     if (buildConfig == 'release') {
+//         signAndroidApks (
+//             keyStoreId: "${params.BUILD_CREDENTIAL_ID}",
+//             keyAlias: "${params.BUILD_CREDENTIAL_ALIAS}",
+//             apksToSign: "**/*-unsigned.apk",
+//         )
+//     } else {
+//       println('Debug Build - Using default developer signing key')
+//     }
+//   }
+
+//   stage("Archive") {
+//     archiveArtifacts artifacts: "android/app/build/outputs/apk/app-${buildConfig}.apk", excludes: 'android/app/build/outputs/apk/*-unaligned.apk'
+//   }
+// }
+
+node("ios") {
+
+  def infoPlist
+  def outputFileName
+  def projectName
+  def sdk = "iphoneos"
 
   stage("Checkout") {
     checkout scm
   }
 
-  stage ("Prepare") {
-    sh 'npm install'
-    //if (!fileExists('android/app/src/main/assets')) {
-    //  sh 'mkdir android/app/src/main/assets'
-    //}
-    // sh 'node_modules/.bin/react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res'
+  stage("Prepare") {
+    sh "npm install --production"
+    def matcher = readFile('package.json') =~ '"name": ?"(.+)"'
+    projectName = matcher[0][1]
+    infoPlist = "${projectName}/Info.plist"
+    outputFileName = "${projectName}-${buildConfig}.ipa".replace(" ", "").toLowerCase()
+
+    println("projectName: ${projectName}, info.plist: ${infoPlist}, outputFileName: ${outputFileName}")
   }
 
   stage("Build") {
-    sh 'chmod +x ./android/gradlew'
-    if (params.BUILD_CONFIG == 'release') {
-      sh 'cd android && ./gradlew clean assembleRelease'
-    } else {
-      sh 'cd android && ./gradlew clean assembleDebug'
-    }
+    sh "node_modules/.bin/react-native run-ios --configuration Release"
   }
 
   stage("Sign") {
-    if (params.BUILD_CONFIG == 'release') {
-        signAndroidApks (
-            keyStoreId: "${params.BUILD_CREDENTIAL_ID}",
-            keyAlias: "${params.BUILD_CREDENTIAL_ALIAS}",
-            apksToSign: "**/*-unsigned.apk",
-            // uncomment the following line to output the signed APK to a separate directory as described above
-            // signedApkMapping: [ $class: UnsignedApkBuilderDirMapping ],
-            // uncomment the following line to output the signed APK as a sibling of the unsigned APK, as described above, or just omit signedApkMapping
-            // you can override these within the script if necessary
-            // androidHome: '/usr/local/Cellar/android-sdk'
-        )
-    } else {
-      println('Debug Build - Using default developer signing key')
-    }
+
   }
 
- stage("Archive") {
-    if (params.BUILD_CONFIG == 'release') {
-        archiveArtifacts artifacts: 'android/app/build/outputs/apk/app-release.apk', excludes: 'android/app/build/outputs/apk/*-unaligned.apk'
-    } else {
-        archiveArtifacts artifacts: 'android/app/build/outputs/apk/app-debug.apk', excludes: 'android/app/build/outputs/apk/*-unaligned.apk'
-    }
+  stage("Archive") {
+    archiveArtifacts artifacts: "platforms/ios/build/${buildconfig}-${sdk}/${outputFileName}"
   }
+
 }
