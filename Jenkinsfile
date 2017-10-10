@@ -40,10 +40,9 @@ def buildConfig = params.BUILD_CONFIG.toLowerCase()
 
 node("ios") {
 
-  def matcher = readFile('package.json') =~ '"name": ?"(.+)"'
-  def projectName = matcher[0][1]
-  def infoPlist = "${projectName}/Info.plist"
-  def outputFileName = "${projectName}-${buildConfig}.ipa".replace(" ", "").toLowerCase()
+  def projectName
+  def infoPlist
+  def outputFileName
   def sdk = "iphoneos"
   def bundleId = "org.feedhenry.rnhelloworld"
   def version = "0.0.0"
@@ -54,6 +53,11 @@ node("ios") {
   }
 
   stage("Prepare") {
+    def matcher = readFile('package.json') =~ '"name": ?"(.+)"'
+    projectName = matcher[0][1]
+    infoPlist = "${projectName}/Info.plist"
+    outputFileName = "${projectName}-${buildConfig}.ipa".replace(" ", "").toLowerCase()
+    
     sh "npm install --production"
   }
 
