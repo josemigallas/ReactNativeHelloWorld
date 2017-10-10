@@ -1,6 +1,8 @@
 /**
 * React-Native Android Jenkinsfile
 */
+def buildConfig = params.BUILD_CONFIG.toLowerCase()
+
 node("android") {
 
   stage("Checkout") {
@@ -8,11 +10,12 @@ node("android") {
   }
 
   stage ("Prepare") {
+    sh 'npm install --production'
   }
 
   stage("Build") {
     sh 'chmod +x ./android/gradlew'
-    if (params.BUILD_CONFIG == 'release') {
+    if (buildConfig == 'release') {
       sh 'cd android && ./gradlew clean assembleRelease'
     } else {
       sh 'cd android && ./gradlew clean assembleDebug'
@@ -20,7 +23,7 @@ node("android") {
   }
 
   stage("Sign") {
-    if (params.BUILD_CONFIG == 'release') {
+    if (buildConfig == 'release') {
         signAndroidApks (
             keyStoreId: "${params.BUILD_CREDENTIAL_ID}",
             keyAlias: "${params.BUILD_CREDENTIAL_ALIAS}",
@@ -36,11 +39,7 @@ node("android") {
     }
   }
 
- stage("Archive") {
-    if (params.BUILD_CONFIG == 'release') {
-        archiveArtifacts artifacts: 'android/app/build/outputs/apk/app-release.apk', excludes: 'android/app/build/outputs/apk/*-unaligned.apk'
-    } else {
-        archiveArtifacts artifacts: 'android/app/build/outputs/apk/app-debug.apk', excludes: 'android/app/build/outputs/apk/*-unaligned.apk'
-    }
+  stage("Archive") {
+    archiveArtifacts artifacts: "android/app/build/outputs/apk/app-${buildConfig}.apk", excludes: 'android/app/build/outputs/apk/*-unaligned.apk'
   }
 }
