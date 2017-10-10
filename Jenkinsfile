@@ -51,6 +51,7 @@ node("ios") {
 
   stage("Prepare") {
     sh "npm install --production"
+    sh "pwd && ls -al"
     def packageJson = new JsonSlurper().parse(readFile(file: '/package.json'))
     projectName = packageJson.name
     infoPlist = "${projectName}/Info.plist"
