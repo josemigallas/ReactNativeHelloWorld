@@ -2,7 +2,7 @@
 * React-Native Android Jenkinsfile
 */
 
-import groovy.json.JsonSlurper
+import groovy.json.JsonSlurperClassic
 
 def buildConfig = params.BUILD_CONFIG.toLowerCase()
 
@@ -52,7 +52,7 @@ node("ios") {
   stage("Prepare") {
     sh "npm install --production"
     sh "pwd && ls -al"
-    def packageJson = new JsonSlurper().parse(readFile(file: 'package.json'))
+    def packageJson = new JsonSlurperClassic().parse(readFile(file: 'package.json'))
     projectName = packageJson.name
     infoPlist = "${projectName}/Info.plist"
     outputFileName = "${projectName}-${buildConfig}.ipa".replace(" ", "").toLowerCase()
