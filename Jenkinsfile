@@ -9,7 +9,7 @@ def buildConfig = params.BUILD_CONFIG.toLowerCase()
 def codeSighProfileId = params.BUILD_CREDENTIAL_ID
 
 // Constanst
-def packageJson = new JsonSlurper().parse(new File('.//package.json'))
+def packageJson = new JsonSlurper().parse(readFile(file: 'package.json'))
 def projectName = packageJson.name
 
 def infoPlist = "${projectName}/Info.plist"
