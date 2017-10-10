@@ -75,6 +75,7 @@ node("ios") {
       xcodeBuildArgs: 'ENABLE_BITCODE=NO OTHER_CFLAGS="-fstack-protector -fstack-protector-all"',
       autoSign: false,
       config: "${buildConfig == 'debug' ? 'Debug' : 'Release'}"
+    )
   }
 
   stage("Sign") {
