@@ -56,6 +56,7 @@ node("ios") {
     // def matcher = readFile('package.json') =~ '"name": ?"(.+)"'
     // projectName = matcher[0][1]
     projectName = "ReactNativeHelloWorld"
+    sh "ls -al"
     infoPlist = "ios/${projectName}/Info.plist"
     outputFileName = "${projectName}-${buildConfig}.ipa".replace(" ", "").toLowerCase()
     
