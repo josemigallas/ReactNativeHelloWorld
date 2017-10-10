@@ -56,7 +56,7 @@ node("ios") {
     // def matcher = readFile('package.json') =~ '"name": ?"(.+)"'
     // projectName = matcher[0][1]
     projectName = "ReactNativeHelloWorld"
-    infoPlist = "${projectName}/Info.plist"
+    infoPlist = "ios/${projectName}/Info.plist"
     outputFileName = "${projectName}-${buildConfig}.ipa".replace(" ", "").toLowerCase()
     
     sh "npm install --production"
