@@ -63,7 +63,7 @@ node("ios") {
   stage("Build") {
     xcodeBuild(
       cleanBeforeBuild: true,
-      src: "./platforms/ios}",
+      src: "./platforms/ios",
       schema: "${projectName}",
       workspace: "${projectName}",
       buildDir: "build",
