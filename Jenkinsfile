@@ -60,7 +60,7 @@ node("ios") {
   }
 
   stage("Build") {
-    sh "react-native run-ios --configuration Release"
+    sh "node_modules/.bin/react-native run-ios --configuration Release"
   }
 
   stage("Sign") {
