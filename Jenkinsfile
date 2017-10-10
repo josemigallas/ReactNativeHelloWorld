@@ -52,7 +52,7 @@ node("ios") {
   stage("Prepare") {
     sh "npm install --production"
     def matcher = readFile('package.json') =~ '"name": ?"(.+)"'
-    def projectName = matcher[0][1]
+    projectName = matcher[0][1]
     infoPlist = "${projectName}/Info.plist"
     outputFileName = "${projectName}-${buildConfig}.ipa".replace(" ", "").toLowerCase()
 
