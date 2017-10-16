@@ -53,23 +53,21 @@ node("ios") {
   }
 
   stage("Prepare") {
-    // def matcher = readFile('package.json') =~ '"name": ?"(.+)"'
-    // projectName = matcher[0][1]
     projectName = "ReactNativeHelloWorld"
-    sh "ls -al"
-    sh "ls -al ios"
-    sh "ls -al ios/${projectName}"
-    infoPlist = "ios/${projectName}/Info.plist"
+    infoPlist = "${projectName}/Info.plist"
     outputFileName = "${projectName}-${buildConfig}.ipa".replace(" ", "").toLowerCase()
     
     sh "npm install --production"
-    sh "mkdir -p platforms/ios"
+
+    dir("ios") {
+      sh 'pod install'
+    }
   }
 
   stage("Build") {
     xcodeBuild(
       cleanBeforeBuild: true,
-      src: "./platforms/ios",
+      src: "./ios",
       schema: "${projectName}",
       workspace: "${projectName}",
       buildDir: "build",

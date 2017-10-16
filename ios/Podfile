@@ -1,0 +1,32 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
+platform :ios, '8.0'
+
+target 'ReactNativeHelloWorld' do
+  #uncomment the following bellow if using swift
+  #use_frameworks!  
+  
+  # Fixes required for pod specs to work with rn 0.42
+  react_native_path = "../node_modules/react-native"
+  
+  pod "Yoga", :path => "#{react_native_path}/ReactCommon/yoga"
+  pod "React", :path => react_native_path, :subspecs => [
+    'Core',
+    'RCTActionSheet',
+    'RCTAnimation',
+    'RCTGeolocation',
+    'RCTImage',
+    'RCTLinkingIOS',
+    'RCTNetwork',
+    'RCTSettings',
+    'RCTText',
+    'RCTVibration',
+    'RCTWebSocket',
+    'DevSupport'
+  ]
+
+  target 'ReactNativeHelloWorldTests' do
+    inherit! :search_paths
+    # Additional pods for testing
+  end
+end
