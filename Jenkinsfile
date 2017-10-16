@@ -63,7 +63,10 @@ node("ios") {
     outputFileName = "${projectName}-${buildConfig}.ipa".replace(" ", "").toLowerCase()
     
     sh "npm install --production"
-    sh "mkdir -p platforms/ios"
+
+    dir("ios/${projectName}") {
+      sh 'pod install'
+    }
   }
 
   stage("Build") {
