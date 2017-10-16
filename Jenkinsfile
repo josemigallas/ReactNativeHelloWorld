@@ -59,7 +59,7 @@ node("ios") {
     sh "ls -al"
     sh "ls -al ios"
     sh "ls -al ios/${projectName}"
-    infoPlist = "ios/${projectName}/Info.plist"
+    infoPlist = "${projectName}/Info.plist"
     outputFileName = "${projectName}-${buildConfig}.ipa".replace(" ", "").toLowerCase()
     
     sh "npm install --production"
@@ -69,7 +69,7 @@ node("ios") {
   stage("Build") {
     xcodeBuild(
       cleanBeforeBuild: true,
-      src: "./platforms/ios",
+      src: "./ios",
       schema: "${projectName}",
       workspace: "${projectName}",
       buildDir: "build",
