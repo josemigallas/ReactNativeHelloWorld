@@ -59,8 +59,6 @@ node("ios") {
     // outputFileName = "${projectName}-${buildConfig}.ipa".replace(" ", "").toLowerCase()
     sh "rm -rf node_modules && npm cache clean"
     sh "npm install --production"
-    sh "which node"
-    sh "echo $NODE_BINARY"
     // sh "mkdir -p platforms/ios"
   }
 
