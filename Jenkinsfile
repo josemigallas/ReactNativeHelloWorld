@@ -82,15 +82,15 @@ node("ios") {
     sh "react-native run-ios --configuration Release"
   }
 
-  stage("Sign") {
-    /*codeSign(
+  /*stage("Sign") {
+    codeSign(
       profileId: "${params.BUILD_CREDENTIAL_ALIAS}",
       clean: true,
       verify: true,
       ipaName: outputFileName,
       appPath: "platforms/ios/build/${buildConfig}-${sdk}/${projectName}.app"
-    )*/
-  }
+    )
+  }*/
 
   stage("Archive") {
     archiveArtifacts artifacts: "platforms/ios/build/${buildconfig}-${sdk}/${outputFileName}"
