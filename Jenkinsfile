@@ -57,8 +57,8 @@ node("ios") {
     // projectName = matcher[0][1]
     // infoPlist = "ios/${projectName}/Info.plist"
     // outputFileName = "${projectName}-${buildConfig}.ipa".replace(" ", "").toLowerCase()
-    
-    // sh "npm install --production"
+    sh "rm -rf node_modules && npm cache clean"
+    sh "npm install --production"
     // sh "mkdir -p platforms/ios"
   }
 
