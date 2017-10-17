@@ -40,9 +40,9 @@ def buildConfig = params.BUILD_CONFIG.toLowerCase()
 
 node("ios") {
 
-  def projectName
-  def infoPlist
-  def outputFileName
+  def projectName = "ReactNativeHelloWorld"
+  // def infoPlist
+  def outputFileName = "${projectName}-${buildConfig}.ipa".replace(" ", "").toLowerCase()
   def sdk = "iphoneos"
   def bundleId = "org.feedhenry.rnhelloworld"
   def version = "0.0.0"
@@ -55,19 +55,15 @@ node("ios") {
   stage("Prepare") {
     // def matcher = readFile('package.json') =~ '"name": ?"(.+)"'
     // projectName = matcher[0][1]
-    projectName = "ReactNativeHelloWorld"
-    sh "ls -al"
-    sh "ls -al ios"
-    sh "ls -al ios/${projectName}"
-    infoPlist = "ios/${projectName}/Info.plist"
-    outputFileName = "${projectName}-${buildConfig}.ipa".replace(" ", "").toLowerCase()
+    // infoPlist = "ios/${projectName}/Info.plist"
+    // outputFileName = "${projectName}-${buildConfig}.ipa".replace(" ", "").toLowerCase()
     
-    sh "npm install --production"
-    sh "mkdir -p platforms/ios"
+    // sh "npm install --production"
+    // sh "mkdir -p platforms/ios"
   }
 
   stage("Build") {
-    xcodeBuild(
+    /*xcodeBuild(
       cleanBeforeBuild: true,
       src: "./platforms/ios",
       schema: "${projectName}",
@@ -81,7 +77,8 @@ node("ios") {
       xcodeBuildArgs: 'ENABLE_BITCODE=NO OTHER_CFLAGS="-fstack-protector -fstack-protector-all"',
       autoSign: false,
       config: "${buildConfig == 'debug' ? 'Debug' : 'Release'}"
-    )
+    )*/
+    sh "react-native run-ios --configuration Release"
   }
 
   stage("Sign") {
