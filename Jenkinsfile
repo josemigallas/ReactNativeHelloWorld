@@ -83,13 +83,13 @@ node("ios") {
   }
 
   stage("Sign") {
-    codeSign(
+    /*codeSign(
       profileId: "${params.BUILD_CREDENTIAL_ALIAS}",
       clean: true,
       verify: true,
       ipaName: outputFileName,
       appPath: "platforms/ios/build/${buildConfig}-${sdk}/${projectName}.app"
-    )
+    )*/
   }
 
   stage("Archive") {
