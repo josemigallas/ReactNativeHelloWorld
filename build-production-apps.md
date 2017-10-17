@@ -15,6 +15,16 @@ https://facebook.github.io/react-native/docs/running-on-device.html#building-you
 
     Run `react-native run-ios --configuration Release` or build with XCode.
 
+
+## IOS with XCode Command Line tools
+https://developer.apple.com/library/content/technotes/tn2339/_index.html
+
+1. List all targets, build configurations and schemes 
+
+    Run `xcodebuild -list -project ios/ReactNativeHelloWorld.xcodeproj/`
+
+2. 
+
 ## Android
 https://facebook.github.io/react-native/docs/running-on-device.html#building-your-app-for-production
 

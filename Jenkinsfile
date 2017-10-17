@@ -40,31 +40,55 @@ def buildConfig = params.BUILD_CONFIG.toLowerCase()
 
 node("ios") {
 
-  def infoPlist
-  def outputFileName
-  def projectName
+  def projectName = "ReactNativeHelloWorld"
+  // def infoPlist
+  def outputFileName = "${projectName}-${buildConfig}.ipa".replace(" ", "").toLowerCase()
   def sdk = "iphoneos"
+  def bundleId = "org.feedhenry.rnhelloworld"
+  def version = "0.0.0"
+  def shortVersion = "0.0"
 
   stage("Checkout") {
     checkout scm
   }
 
   stage("Prepare") {
+    // def matcher = readFile('package.json') =~ '"name": ?"(.+)"'
+    // projectName = matcher[0][1]
+    // infoPlist = "ios/${projectName}/Info.plist"
+    // outputFileName = "${projectName}-${buildConfig}.ipa".replace(" ", "").toLowerCase()
+    sh "rm -rf node_modules && npm cache clean"
     sh "npm install --production"
-    def matcher = readFile('package.json') =~ '"name": ?"(.+)"'
-    projectName = matcher[0][1]
-    infoPlist = "${projectName}/Info.plist"
-    outputFileName = "${projectName}-${buildConfig}.ipa".replace(" ", "").toLowerCase()
-
-    println("projectName: ${projectName}, info.plist: ${infoPlist}, outputFileName: ${outputFileName}")
+    // sh "mkdir -p platforms/ios"
   }
 
   stage("Build") {
-    sh "node_modules/.bin/react-native run-ios --configuration Release"
+    /*xcodeBuild(
+      cleanBeforeBuild: true,
+      src: "./platforms/ios",
+      schema: "${projectName}",
+      workspace: "${projectName}",
+      buildDir: "build",
+      sdk: "${sdk}",
+      version: "${version}",
+      shortVersion: "${shortVersion}",
+      bundleId: "${bundleId}",
+      infoPlistPath: "${infoPlist}",
+      xcodeBuildArgs: 'ENABLE_BITCODE=NO OTHER_CFLAGS="-fstack-protector -fstack-protector-all"',
+      autoSign: false,
+      config: "${buildConfig == 'debug' ? 'Debug' : 'Release'}"
+    )*/
+    sh "react-native run-ios --configuration Release"
   }
 
   stage("Sign") {
-
+    codeSign(
+      profileId: "${params.BUILD_CREDENTIAL_ALIAS}",
+      clean: true,
+      verify: true,
+      ipaName: outputFileName,
+      appPath: "platforms/ios/build/${buildConfig}-${sdk}/${projectName}.app"
+    )
   }
 
   stage("Archive") {
