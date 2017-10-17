@@ -58,7 +58,8 @@ node("ios") {
     // infoPlist = "ios/${projectName}/Info.plist"
     // outputFileName = "${projectName}-${buildConfig}.ipa".replace(" ", "").toLowerCase()
     sh "rm -rf node_modules && npm cache clean"
-    sh "npm install --production"
+    // sh "npm install babel-preset-react-native@2.1.0 --save-dev"
+    sh "npm install"
     // sh "mkdir -p platforms/ios"
   }
 
