@@ -47,6 +47,7 @@ node("ios") {
   def bundleId = "org.feedhenry.rnhelloworld"
   def version = "0.0.0"
   def shortVersion = "0.0"
+  def credentialBundleId = "25043336-45ff-4dc8-be1f-063bd8d1a5f9"
 
   stage("Checkout") {
     checkout scm
@@ -82,15 +83,15 @@ node("ios") {
     sh "react-native run-ios --configuration Release"
   }
 
-  /*stage("Sign") {
+  stage("Sign") {
     codeSign(
-      profileId: "${params.BUILD_CREDENTIAL_ALIAS}",
+      profileId: "${credentialBundleId}",
       clean: true,
       verify: true,
       ipaName: outputFileName,
       appPath: "platforms/ios/build/${buildConfig}-${sdk}/${projectName}.app"
     )
-  }*/
+  }
 
   stage("Archive") {
     archiveArtifacts artifacts: "platforms/ios/build/${buildconfig}-${sdk}/${outputFileName}"
