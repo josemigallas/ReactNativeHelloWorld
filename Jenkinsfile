@@ -89,7 +89,8 @@ node("ios") {
       clean: true,
       verify: true,
       ipaName: outputFileName,
-      appPath: "platforms/ios/build/${buildConfig}-${sdk}/${projectName}.app"
+      // appPath: "platforms/ios/build/${buildConfig}-${sdk}/${projectName}.app"
+      appPath: "/Users/jenkins/workspace/react-native-pipeline/ios/build/Build/Products/Release-iphonesimulator/ReactNativeHelloWorld.app"
     )
   }
 
