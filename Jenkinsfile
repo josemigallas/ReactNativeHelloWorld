@@ -83,7 +83,7 @@ node("ios") {
     sh "react-native run-ios --configuration Release"
   }
 
-  stage("Sign") {
+  /*stage("Sign") {
     codeSign(
       profileId: "${credentialBundleId}",
       clean: true,
@@ -92,10 +92,11 @@ node("ios") {
       // appPath: "platforms/ios/build/${buildConfig}-${sdk}/${projectName}.app"
       appPath: "/Users/jenkins/workspace/react-native-pipeline/ios/build/Build/Products/Release-iphonesimulator/ReactNativeHelloWorld.app"
     )
-  }
+  }*/
 
   stage("Archive") {
-    archiveArtifacts artifacts: "platforms/ios/build/${buildconfig}-${sdk}/${outputFileName}"
+    // archiveArtifacts artifacts: "platforms/ios/build/${buildconfig}-${sdk}/${outputFileName}"
+    archiveArtifacts artifacts: "/Users/jenkins/workspace/react-native-pipeline/ios/build/Build/Products/Release-iphonesimulator/ReactNativeHelloWorld.app"
   }
 
 }
