@@ -96,7 +96,7 @@ node("ios") {
 
   stage("Archive") {
     // archiveArtifacts artifacts: "platforms/ios/build/${buildconfig}-${sdk}/${outputFileName}"
-    archiveArtifacts artifacts: "/Users/jenkins/workspace/react-native-pipeline/ios/build/Build/Products/*.app"
+    archiveArtifacts artifacts: "/Users/jenkins/workspace/react-native-pipeline/ios/build/Build/Products/Release-iphonesimulator/ReactNativeHelloWorld.app"
   }
 
 }
